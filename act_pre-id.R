@@ -59,11 +59,12 @@ output = full_join(p, dmr, by = c("STUDENT_KEY" = "student_key")) %>%
                                        str_c(ifelse(month(mdy(dob)) >= 10, month(mdy(dob)), str_c("0", month(mdy(dob)))),
                                              ifelse(day(mdy(dob)) >= 10, day(mdy(dob)), str_c("0", day(mdy(dob)))), 
                                              year(mdy(dob)), sep = "/")),
-              `State Student ID` = STUDENT_KEY, `Test Code` = "mc", `Delivery Form` = Delivery_Format) %>% 
+              `State Student ID` = STUDENT_KEY, `Test Code` = "mc", `Delivery Form` = Delivery_Format,
+              district_no = ifelse(is.na(district_no), PRIMARY_DISTRICT_ID, district_no),
+              school_no = ifelse(is.na(school_no), PRIMARY_SCHOOL_ID, school_no)) %>% 
     arrange(`Organization Code`, `Delivery Form`) %>% 
     mutate(`Delivery Form` = dendextend::na_locf(`Delivery Form`))
     
-    
 # Output
-write_csv(output, str_c("K:/Research_Transfers/ACT Files/2018 Spring pre-ID/ACT_pre-id_combined_EK_", 
-                        str_replace_all(today(), "-", ""), ".csv"), na = "")
+# write_csv(output, str_c("K:/Research_Transfers/ACT Files/2018 Spring pre-ID/ACT_pre-id_combined_EK_", 
+#                         str_replace_all(today(), "-", ""), ".csv"), na = "")
